@@ -21,7 +21,8 @@ setup(
     install_requires=read_requirements("requirements.txt"),
     entry_points={
         "console_scripts": [
-            "zornigor = zornigor.run:run",
+            "zornigor-api = zornigor.run:run",
+            "zornigor-dev-api = zornigor.run:run_dev"
         ]
     },
 )

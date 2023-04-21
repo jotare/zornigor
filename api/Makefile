@@ -1,8 +1,4 @@
-##
-# Zornigor
-#
-# @file
-# @version 0.1
+PORT := 8080
 
 venv:
 	pyenv virtualenv zornigor
@@ -12,5 +8,5 @@ install:
 	pip install --upgrade pip
 	pip install -e .
 
-
-# end
+run-dev:
+	zornigor-dev-api
