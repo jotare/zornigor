@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+from zornigor.api.models.common import Slug
+
 
 class CreateProject(BaseModel):
     name: str
@@ -7,6 +9,6 @@ class CreateProject(BaseModel):
 
 
 class Project(BaseModel):
-    slug: str
+    id: Slug
     name: str
     description: str
