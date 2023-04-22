@@ -7,7 +7,6 @@ class CreateProject(BaseModel):
 
 
 class Project(BaseModel):
-    id: str
     slug: str
     name: str
     description: str

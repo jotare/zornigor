@@ -17,7 +17,7 @@ async def create_project(request: Request) -> Project:
 
 
 @api.get(
-    f"/{PROJECTS}/{{project_id}}",
+    f"/{PROJECTS}",
     status_code=200,
     name="List projects",
     tags=["Projects"],
@@ -26,13 +26,28 @@ async def create_project(request: Request) -> Project:
 async def list_projects(request: Request) -> List[Project]:
     return [
         Project(
-            id=1,
+            slug="project-1",
             name="Project 1",
             description="Description one",
         ),
         Project(
-            id=2,
+            slug="project-2",
             name="Project 2",
             description="Description two",
         )
     ]
+
+
+@api.get(
+    f"/{PROJECTS}/{{project_slug}}",
+    status_code=200,
+    name="Get project",
+    tags=["Projects"],
+)
+@version(1)
+async def get_project(request: Request, project_slug: str) -> Project:
+    return Project(
+        slug=project_slug,
+        name=f"Project: {project_slug}",
+        description="Description for {project_slug}",
+    )
