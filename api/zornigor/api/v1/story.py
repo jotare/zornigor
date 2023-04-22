@@ -31,15 +31,18 @@ async def list_stories(request: Request) -> List[Story]:
             id=1,
             title="Story 1",
             description="Description one",
+            state="todo"
         ),
         Story(
             id=2,
             title="Story 2",
             description="Description two",
+            state="dev"
         ),
         Story(
             id=3,
             title="Story 3",
             description="Description three",
+            state="done",
         ),
     ]
