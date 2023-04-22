@@ -1,21 +1,45 @@
+from typing import List
+
 from starlette.requests import Request
 from fastapi_versioning import version
 
-from zornigor.api.v1.router import api, STORIES, STORY
+from zornigor.api.v1.router import api, PROJECTS, STORIES, STORY
+from zornigor.api.models.story import Story
+
+
+@api.post(
+    f"/{PROJECTS}/{{project_id}}/{STORIES}",
+    status_code=201,
+    name="Create story",
+    tags=["Stories"],
+)
+@version(1)
+async def create_story(request: Request) -> Story:
+    raise NotImplementedError()
 
 
 @api.get(
-    f"/{STORIES}",
+    f"/{PROJECTS}/{{project_id}}/{STORIES}",
     status_code=200,
     name="List stories",
     tags=["Stories"],
 )
 @version(1)
-async def list_stories(request: Request):
+async def list_stories(request: Request) -> List[Story]:
     return [
-        {
-            "id": 1,
-            "name": "Story 1",
-            "description": "Description",
-        }
+        Story(
+            id=1,
+            title="Story 1",
+            description="Description one",
+        ),
+        Story(
+            id=2,
+            title="Story 2",
+            description="Description two",
+        ),
+        Story(
+            id=3,
+            title="Story 3",
+            description="Description three",
+        ),
     ]
