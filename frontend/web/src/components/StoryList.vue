@@ -2,11 +2,20 @@
     <div class="stories">
         <h1>Stories</h1>
         <p v-if="stories_error">{{ stories_error }}</p>
+        <p v-if="states_error">{{ stories_error }}</p>
+
         <ul>
-            <li v-for="story in stories" :key="story.id">
-                <!-- Item -->
-                <h3>{{ story.title }}</h3>
-                <p>{{ story.description }}</p>
+            <li v-for="state in states" :key="state.id">
+                <h3>{{ state.name }}</h3>
+                <p>{{ state.description }}</p>
+
+                <ul>
+                    <li v-for="story in stories" :key="story.id">
+                        <!-- Item -->
+                        <h3>{{ story.title }}</h3>
+                        <p>{{ story.description }}</p>
+                    </li>
+                </ul>
             </li>
         </ul>
     </div>
@@ -15,24 +24,32 @@
 <script>
  import { mapState } from "pinia"
  import { use_stories_store } from "../stores/story"
+ import { use_states_store } from "../stores/state"
 
  export default {
      name: 'StoryList',
 
      setup() {
          const stories_store = use_stories_store();
+         const states_store = use_states_store();
 
-         return { stories_store }
+         return { stories_store, states_store }
      },
 
      created() {
-         this.stories_store.fetch_stories()
+         this.stories_store.fetch_stories();
+         this.states_store.fetch_states();
      },
 
      computed: {
          ...mapState(use_stories_store, ["stories"]),
          ...mapState(use_stories_store, {
              stories_error: "error",
+         }),
+
+         ...mapState(use_states_store, ["states"]),
+         ...mapState(use_states_store, {
+             states_error: "error",
          }),
      },
  }

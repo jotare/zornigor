@@ -36,7 +36,7 @@ const actions = {
 }
 
 export const use_stories_store = defineStore({
-    id: "stores",
+    id: "story-store",
     state,
     getters,
     actions,
