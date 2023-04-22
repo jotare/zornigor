@@ -1,3 +1,5 @@
+from typing import List
+
 from starlette.requests import Request
 from fastapi_versioning import version
 

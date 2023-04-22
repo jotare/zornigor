@@ -1,18 +1,20 @@
+from typing import List
+
 from starlette.requests import Request
 from fastapi_versioning import version
 
-from zornigor.api.v1.router import api, STATES, STATE
+from zornigor.api.v1.router import api, STATES, PROJECTS
 from zornigor.api.models.state import State
 
 
 @api.get(
-    f"/{STATES}",
+    f"/{PROJECTS}/{{project_id}}/{STATES}",
     status_code=200,
     name="List states",
     tags=["States"],
 )
 @version(1)
-async def list_states(request: Request) -> List[State]:
+async def list_states(request: Request, project_id: str) -> List[State]:
     # TODO implement non hardcoded states
     return [
         State(
