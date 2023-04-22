@@ -9,4 +9,5 @@ install:
 	pip install -e .
 
 run-dev:
-	zornigor-dev-api
+	# zornigor-dev-api
+	uvicorn --port=8080 zornigor.app:app --reload
