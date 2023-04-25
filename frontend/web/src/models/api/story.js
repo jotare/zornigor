@@ -6,8 +6,10 @@ const story_schema = {
     $id: "story",
     type: "object",
     properties: {
+        id: {type: "integer"},
         title: {type: "string"},
         description: {type: "string"},
+        state: {type: "string"},
     },
     additionalProperties: true,
 }

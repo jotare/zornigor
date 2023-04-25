@@ -43,6 +43,18 @@ async def list_stories(request: Request) -> List[Story]:
             id=3,
             title="Story 3",
             description="Description three",
+            state="blocked",
+        ),
+        Story(
+            id=4,
+            title="Story 4",
+            description="Description four",
+            state="done",
+        ),
+        Story(
+            id=5,
+            title="Story 5",
+            description="Description five",
             state="done",
         ),
     ]

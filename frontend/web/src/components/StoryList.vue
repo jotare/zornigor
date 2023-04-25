@@ -1,19 +1,25 @@
 <template>
-    <div class="stories">
-        <h1>Stories</h1>
-        <p v-if="stories_error">{{ stories_error }}</p>
-        <p v-if="states_error">{{ stories_error }}</p>
+    <h1 class="title">Stories</h1>
 
-        <ul>
-            <li v-for="state in states" :key="state.id">
-                <h3>{{ state.name }}</h3>
-                <p>{{ state.description }}</p>
+    <div v-if="stories_error">
+        {{ stories_error }}
+    </div>
+
+    <div v-else-if="states_error">
+        {{ states_error }}
+    </div>
+
+    <div v-else class="container">
+        <ul class="columns is-mobile">
+            <li class="column" v-for="state in states" :key="state.id" style="border: 4px double green">
+                <h3 class="subtitle has-text-weight-semibold">{{ state.name }}</h3>
+                <!-- <p>{{ state.description }}</p> -->
+
+                <hr style="border: 4px double green" />
 
                 <ul>
-                    <li v-for="story in stories" :key="story.id">
-                        <!-- Item -->
-                        <h3>{{ story.title }}</h3>
-                        <p>{{ story.description }}</p>
+                    <li v-for="story in stories[state.id]" :key="story.id">
+                        <StoryItem :story="story"/>
                     </li>
                 </ul>
             </li>
@@ -22,35 +28,60 @@
 </template>
 
 <script>
- import { mapState } from "pinia"
+ // import { mapState } from "pinia"
  import { use_stories_store } from "../stores/story"
  import { use_states_store } from "../stores/state"
 
+ import StoryItem from "./StoryItem.vue"
+
  export default {
-     name: 'StoryList',
+     name: "StoryList",
+
+     components: {
+         StoryItem,
+     },
 
      setup() {
-         const stories_store = use_stories_store();
-         const states_store = use_states_store();
+         const stores = {
+             stories: use_stories_store(),
+             states: use_states_store(),
+         }
 
-         return { stories_store, states_store }
+         return { stores }
      },
 
      created() {
-         this.stories_store.fetch_stories();
-         this.states_store.fetch_states();
+         this.stores.stories.fetch_stories();
+         this.stores.states.fetch_states();
      },
 
      computed: {
-         ...mapState(use_stories_store, ["stories"]),
-         ...mapState(use_stories_store, {
-             stories_error: "error",
-         }),
+         states() {
+             return this.stores.states.states;
+         },
 
-         ...mapState(use_states_store, ["states"]),
-         ...mapState(use_states_store, {
-             states_error: "error",
-         }),
+         states_error() {
+             return this.stores.states.error;
+         },
+
+         stories() {
+             let stories = {}
+             for (let state of this.states) {
+                 for (let story of this.stores.stories.stories) {
+                     if (story.state == state.id) {
+                         if (stories[state.id] == null) {
+                             stories[state.id] = [];
+                         }
+                         stories[state.id].push(story);
+                     }
+                 }
+             }
+             return stories;
+         },
+
+         stories_error() {
+             return this.stores.stories.error;
+         },
      },
  }
 </script>
