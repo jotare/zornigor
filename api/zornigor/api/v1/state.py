@@ -1,10 +1,10 @@
 from typing import List
 
-from starlette.requests import Request
 from fastapi_versioning import version
+from starlette.requests import Request
 
-from zornigor.api.v1.router import api, STATES, PROJECTS
 from zornigor.api.models.state import State
+from zornigor.api.v1.router import PROJECTS, STATES, api
 
 
 @api.get(

@@ -12,6 +12,7 @@ def run():
 
     asyncio.run(server.serve())
 
+
 def run_dev():
     config = Config(app, port=8080, log_level="info", reload=True)
     server = Server(config=config)

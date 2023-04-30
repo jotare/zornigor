@@ -1,13 +1,9 @@
-from typing import Union
-
 from fastapi import FastAPI
 from fastapi_versioning import VersionedFastAPI
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
-from starlette.routing import Mount
 
 from zornigor.api.v1.router import api as api_v1
-
 
 middleware = [
     Middleware(

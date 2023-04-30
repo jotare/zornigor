@@ -1,10 +1,10 @@
 from typing import List
 
-from starlette.requests import Request
 from fastapi_versioning import version
+from starlette.requests import Request
 
-from zornigor.api.v1.router import api, PROJECTS, PROJECT
 from zornigor.api.models.project import Project
+from zornigor.api.v1.router import PROJECTS, api
 
 
 @api.post(
@@ -36,7 +36,7 @@ async def list_projects(request: Request) -> List[Project]:
             id="project-2",
             name="Project 2",
             description="Description two",
-        )
+        ),
     ]
 
 
