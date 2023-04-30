@@ -4,6 +4,9 @@ WEB_MAKE = make -C frontend/web/
 
 
 api-install:
+	${API_MAKE} dist-install
+
+api-install-dev:
 	${API_MAKE} install
 
 web-install:
