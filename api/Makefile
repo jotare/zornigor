@@ -32,3 +32,8 @@ lint:
 format:
 	isort --profile black $(sources) $(tests)
 	black $(sources) $(tests)
+
+
+.PHONY: tests
+tests:
+	pytest -svv zornigor/tests/
