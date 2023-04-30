@@ -19,6 +19,7 @@ setup(
     author="jotare",
     license="AGPLv3",
     install_requires=read_requirements("requirements.txt"),
+    test_require=read_requirements("requirements-test.txt"),
     entry_points={
         "console_scripts": [
             "zornigor-api = zornigor.run:run",
