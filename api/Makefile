@@ -22,7 +22,7 @@ run-dev:
 
 
 sources := zornigor
-tests := tests
+tests := zornigor/tests
 
 lint:
 	flake8 --config=setup.cfg

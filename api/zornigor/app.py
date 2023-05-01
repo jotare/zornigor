@@ -4,6 +4,7 @@ from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 
 from zornigor.api.v1.router import api as api_v1
+from zornigor.lifecycle import finalize, initialize
 
 middleware = [
     Middleware(
@@ -16,6 +17,8 @@ middleware = [
 
 settings = dict(
     middleware=middleware,
+    on_startup=[initialize],
+    on_shutdown=[finalize],
 )
 
 base_app = FastAPI(title="Zornigor API", **settings)
