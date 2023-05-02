@@ -1,15 +1,39 @@
 <template>
-  <StoryList/>
+    <NavBar/>
+    <main class="pt-4 container">
+        <router-view></router-view>
+    </main>
 </template>
 
 <script>
- import StoryList from "./components/StoryList.vue"
+ import { use_projects_store } from "@/stores/project"
+
+ import NavBar from "./components/NavBar.vue"
 
  export default {
-   name: "App",
-   components: {
-     StoryList
-   }
+     name: "App",
+
+     components: {
+         NavBar,
+     },
+
+     setup() {
+         const stores = {
+             projects: use_projects_store(),
+         }
+
+         return { stores }
+     },
+
+     created() {
+         this.stores.projects.fetch_projects();
+     },
+
+     computed: {
+         current_project() {
+             return this.stores.projects.current_project;
+         },
+     },
  }
 </script>
 

@@ -22,8 +22,8 @@ const getters = {
 }
 
 const actions = {
-    fetch_states() {
-        axios.get("http://localhost:8080/api/v1/projects/chores/states").then((response) => {
+    fetch_states(project_id) {
+        axios.get(`http://localhost:8080/api/v1/project/${project_id}/states`).then((response) => {
             if (!validate_state_list(response.data)) {
                 this._error = `Invalid data from API: ${validate_state_list.errors[-1]}`;
                 console.error(this._error);

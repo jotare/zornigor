@@ -1,6 +1,4 @@
 <template>
-    <h1 class="title">Stories</h1>
-
     <div v-if="stories_error">
         {{ stories_error }}
     </div>
@@ -37,6 +35,8 @@
  export default {
      name: "StoryList",
 
+     props: ["project"],
+
      components: {
          StoryItem,
      },
@@ -51,8 +51,8 @@
      },
 
      created() {
-         this.stores.stories.fetch_stories();
-         this.stores.states.fetch_states();
+         this.stores.states.fetch_states(this.project.id);
+         this.stores.stories.fetch_stories(this.project.id);
      },
 
      computed: {
