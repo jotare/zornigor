@@ -20,6 +20,7 @@ def upgrade() -> None:
     op.create_table(
         "projects",
         sa.Column("slug", sa.String, nullable=False, primary_key=True),
+        sa.Column("name", sa.String, nullable=False),
         sa.Column("description", sa.String, nullable=True),
         sa.Column("created", sa.DateTime, default=sa.func.now()),
     )
@@ -29,7 +30,7 @@ def upgrade() -> None:
         sa.Column("slug", sa.String, primary_key=True),
         sa.Column("name", sa.String, nullable=False),
         sa.Column("description", sa.String, server_default=""),
-        sa.Column("color", sa.String(6), server_defaul="000000", comment="Hex RGB color"),
+        sa.Column("color", sa.String(6), server_default="000000", comment="Hex RGB color"),
         sa.Column("project", sa.String, sa.ForeignKey("projects.slug"), primary_key=True),
     )
 

@@ -1,4 +1,4 @@
-from zornigor.db.utility import create_database, get_database, set_database
+from zornigor.db.utility import create_database, forget_database, set_database
 from zornigor.settings import settings
 
 
@@ -9,6 +9,4 @@ async def initialize():
 
 
 async def finalize():
-    db = get_database()
-    if db is not None:
-        await db.finalize()
+    forget_database()

@@ -4,11 +4,11 @@ from fastapi_versioning import version
 from starlette.requests import Request
 
 from zornigor.api.models.state import State
-from zornigor.api.v1.router import PROJECTS, STATES, api
+from zornigor.api.v1.router import PROJECT, STATES, api
 
 
 @api.get(
-    f"/{PROJECTS}/{{project_id}}/{STATES}",
+    f"/{PROJECT}/{{project_id}}/{STATES}",
     status_code=200,
     name="List states",
     tags=["States"],

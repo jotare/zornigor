@@ -4,11 +4,11 @@ from fastapi_versioning import version
 from starlette.requests import Request
 
 from zornigor.api.models.story import Story
-from zornigor.api.v1.router import PROJECTS, STORIES, api
+from zornigor.api.v1.router import PROJECT, STORIES, api
 
 
 @api.post(
-    f"/{PROJECTS}/{{project_id}}/{STORIES}",
+    f"/{PROJECT}/{{project_id}}/{STORIES}",
     status_code=201,
     name="Create story",
     tags=["Stories"],
@@ -19,7 +19,7 @@ async def create_story(request: Request) -> Story:
 
 
 @api.get(
-    f"/{PROJECTS}/{{project_id}}/{STORIES}",
+    f"/{PROJECT}/{{project_id}}/{STORIES}",
     status_code=200,
     name="List stories",
     tags=["Stories"],

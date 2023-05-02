@@ -7,6 +7,7 @@ projects = sa.Table(
     "projects",
     metadata,
     sa.Column("slug", sa.String, nullable=False, primary_key=True),
+    sa.Column("name", sa.String, nullable=False),
     sa.Column("description", sa.String, nullable=True),
     sa.Column("created", sa.DateTime, default=sa.func.now()),
 )

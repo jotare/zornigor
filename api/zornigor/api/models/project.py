@@ -1,10 +1,13 @@
-from pydantic import BaseModel
+from typing import Optional
+
+from pydantic import BaseModel, Field
 
 from zornigor.api.models.common import Slug
 
 
 class CreateProject(BaseModel):
-    name: str
+    id: Optional[Slug] = None
+    name: str = Field(min_length=1)
     description: str
 
 
