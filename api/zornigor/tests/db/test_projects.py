@@ -1,7 +1,7 @@
 import pytest
 
 from zornigor.db.models import Project
-from zornigor.db.projects import list_projects, create_project, get_project
+from zornigor.db.projects import create_project, get_project, list_projects
 
 
 @pytest.mark.asyncio

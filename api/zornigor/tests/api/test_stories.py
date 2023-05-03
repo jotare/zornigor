@@ -32,6 +32,7 @@ async def test_get_nonexistent_project_story(api: AsyncClient):
     resp = await api.get(f"/{PROJECT}/fake")
     assert resp.status_code == 404
 
+
 @pytest.mark.asyncio
 async def test_get_nonexistent_story(api: AsyncClient, project: Project):
     resp = await api.get(f"/{PROJECT}/{project.id}/{STORY}/123")

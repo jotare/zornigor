@@ -7,9 +7,9 @@ from sqlalchemy import create_engine
 
 from zornigor.api.models.project import CreateProject, Project
 from zornigor.api.models.story import CreateStory, Story
-from zornigor.api.v1.router import PROJECTS, PROJECT, STORIES, STORY
+from zornigor.api.v1.router import PROJECT, PROJECTS, STORIES, STORY
 from zornigor.db.tables import metadata
-from zornigor.db.utility import create_database, set_database, forget_database
+from zornigor.db.utility import create_database, forget_database, set_database
 
 
 @pytest.fixture(scope="session")
