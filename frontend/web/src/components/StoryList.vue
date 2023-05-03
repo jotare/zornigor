@@ -26,7 +26,6 @@
 </template>
 
 <script>
- // import { mapState } from "pinia"
  import { use_stories_store } from "../stores/story"
  import { use_states_store } from "../stores/state"
 
@@ -53,6 +52,13 @@
      created() {
          this.stores.states.fetch_states(this.project.id);
          this.stores.stories.fetch_stories(this.project.id);
+     },
+
+     watch: {
+         project(value) {
+             this.stores.states.fetch_states(value.id);
+             this.stores.stories.fetch_stories(value.id);
+         },
      },
 
      computed: {

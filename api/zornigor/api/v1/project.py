@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi_versioning import version
 from starlette.requests import Request
-from starlette.responses import Response, JSONResponse
+from starlette.responses import JSONResponse, Response
 
 from zornigor.api.models.project import CreateProject, Project
 from zornigor.api.v1.router import PROJECT, PROJECTS, api

@@ -9,9 +9,7 @@ from zornigor.db.utility import get_database
 
 async def create_project(project: Project):
     db = get_database(strict=True)
-    stmt = insert(projects).values(
-        slug=project.slug, name=project.name, description=project.description
-    )
+    stmt = insert(projects).values(**project.dict())
     await db.execute(stmt)
 
 
@@ -20,11 +18,17 @@ async def get_project(slug: str) -> Optional[Project]:
     stmt = select(
         projects.c.slug, projects.c.name, projects.c.description, projects.c.created
     ).where(projects.c.slug == slug)
+
     result = await db.fetch_one(stmt)
     if result is None:
         return None
-    (slug, name, description, created) = result
-    return Project(slug=slug, name=name, description=description, created=created)
+
+    return Project(
+        slug=result.slug,
+        name=result.name,
+        description=result.description,
+        created=result.created,
+    )
 
 
 async def list_projects() -> List[Project]:
@@ -32,8 +36,12 @@ async def list_projects() -> List[Project]:
     stmt = select(
         projects.c.slug, projects.c.name, projects.c.description, projects.c.created
     )
-    results = await db.fetch_all(stmt)
     return [
-        Project(slug=slug, name=name, description=description, created=created)
-        for (slug, name, description, created) in results
+        Project(
+            slug=row.slug,
+            name=row.name,
+            description=row.description,
+            created=row.created,
+        )
+        async for row in db.iterate(stmt)
     ]

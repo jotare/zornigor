@@ -14,14 +14,15 @@ install:
 
 install-db:
 	@python scripts/create_db.py
+	alembic upgrade head
 
 
 run-dev:
 	# zornigor-dev-api
-	uvicorn --port=8080 zornigor.app:app --reload
+	uvicorn --port=$(PORT) zornigor.app:app --reload
 
 
-sources := zornigor
+sources := zornigor scripts
 tests := zornigor/tests
 
 lint:

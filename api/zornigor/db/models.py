@@ -23,7 +23,7 @@ class Story(BaseModel):
     id: int
     title: str
     description: str
-    creation: datetime
-    modification: datetime
+    created: datetime = Field(default_factory=datetime.now)
+    modified: datetime = Field(default_factory=datetime.now)
     project: str
     state: str

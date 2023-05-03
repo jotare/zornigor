@@ -1,9 +1,12 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
 class CreateStory(BaseModel):
     title: str
     description: str
+    state: str
 
 
 class Story(BaseModel):
@@ -12,7 +15,8 @@ class Story(BaseModel):
     title: str
     description: str
 
-    state: str
-
     # creation: datetime
     # modification: datetime
+
+    project: str
+    state: str

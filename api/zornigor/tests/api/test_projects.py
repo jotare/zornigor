@@ -6,7 +6,7 @@ from zornigor.api.v1.router import PROJECT, PROJECTS
 
 
 @pytest.mark.asyncio
-async def test_create_project(api):
+async def test_create_project(api: AsyncClient):
     payload = CreateProject(name="Zornigor Project", description="This is Zornigor")
 
     resp = await api.post(f"/{PROJECTS}", data=payload.json())
@@ -14,7 +14,7 @@ async def test_create_project(api):
 
 
 @pytest.mark.asyncio
-async def test_get_project(api, project):
+async def test_get_project(api: AsyncClient, project: Project):
     resp = await api.get(f"/{PROJECT}/{project.id}")
     assert resp.status_code == 200
 
@@ -25,9 +25,9 @@ async def test_get_project(api, project):
 
 
 @pytest.mark.asyncio
-async def test_get_nonexistent_project(api):
+async def test_get_nonexistent_project(api: AsyncClient):
     resp = await api.get(f"/{PROJECT}/fake")
     assert resp.status_code == 404
 
 
-# TODO: get 404, update, list
+# TODO: update, list
