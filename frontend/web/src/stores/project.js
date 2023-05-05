@@ -51,7 +51,6 @@ const actions = {
         if (project_id in this._projects) {
             this._current_project = this._projects[project_id]
         }
-        console.log("[store] Project set:", this._current_project);
     },
 
     fetch_projects(force = false) {
@@ -76,8 +75,6 @@ const actions = {
                 for (const project of response.data) {
                     this._projects[project.id] = project;
                 }
-                console.log("response", response.data)
-                console.log("Projects:", this._projects)
             })
             .catch((error) => {
                 console.log("ERROR", error)

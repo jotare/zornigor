@@ -1,5 +1,6 @@
 <template>
     <NavBar/>
+
     <main class="pt-4 container">
         <router-view></router-view>
     </main>
