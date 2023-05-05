@@ -1,5 +1,5 @@
 <template>
-    <a class="box has-background-grey-lighter" @click="open_modal">
+    <a class="box has-background-link-light" @click="open_modal" >
         <h3>{{ story.title }}</h3>
     </a>
 
@@ -8,7 +8,7 @@
 
         <div ref="detail-view" class="modal-content fullsize" tabindex="0" @keyup.esc="close_modal">
             <div class="box" style="height: 100%">
-                <h3>{{ story.title }}</h3>
+                <h3>{{ story.title }} ({{ story.id }})</h3>
                 <hr style="border: 1px green" />
                 <div class="columns">
                     <!-- Story content -->

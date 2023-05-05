@@ -9,11 +9,14 @@
 
     <div v-else class="container">
         <ul class="columns is-mobile">
-            <li class="column" v-for="state in states" :key="state.id" style="border: 4px double green">
+            <li
+                class="column border"
+                v-for="state in states" :key="state.id"
+            >
                 <h3 class="subtitle has-text-weight-semibold">{{ state.name }}</h3>
                 <!-- <p>{{ state.description }}</p> -->
 
-                <hr style="border: 4px double green" />
+                <hr class="border" />
 
                 <ul>
                     <li v-for="story in stories[state.id]" :key="story.id">
@@ -93,7 +96,9 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss">
+ @import "~bulma/bulma.sass";
+
  h3 {
      margin: 40px 0 0;
  }
@@ -107,5 +112,9 @@
  }
  a {
      color: #42b983;
+ }
+
+ .border {
+    border: 4px double $info;
  }
 </style>
