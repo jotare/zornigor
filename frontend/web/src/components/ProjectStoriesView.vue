@@ -39,6 +39,7 @@
      watch: {
          "$route.params": {
              handler: function(value) {
+                 this.stores.projects.fetch_project(value.id);
                  this.project = this.stores.projects.project_by_id(value.id);
              },
              deep: true
