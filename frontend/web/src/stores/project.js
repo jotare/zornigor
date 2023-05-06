@@ -1,7 +1,6 @@
-import axios from "axios"
 import { defineStore } from "pinia"
 
-import { validate_project_list } from "@/models/api/project"
+import { get_project, list_projects } from "@/api/projects"
 
 
 const state = () => {
@@ -63,32 +62,35 @@ const actions = {
         }
 
         this.ongoing_fetches.project_list = true;
-        axios
-            .get("http://localhost:8080/api/v1/projects")
-            .then((response) => {
-                if (!validate_project_list(response.data)) {
-                    this._error = `Invalid data from API: ${validate_project_list.errors[-1]}`;
-                    console.error(this._error);
-                    return;
-                }
-
-                for (const project of response.data) {
+        list_projects()
+            .then((projects) => {
+                for (const project of projects) {
                     this._projects[project.id] = project;
                 }
             })
             .catch((error) => {
-                console.log("ERROR", error)
                 this._error = error.message;
             })
             .finally(() => {
                 this.ongoing_fetches.project_list = false;
-            });
+            })
     },
 
     fetch_project(project_id) {
-        // TODO fetch only this project
-        project_id;
-        this.fetch_projects();
+        if (this.ongoing_fetches.project) {
+            return;
+        }
+        this.ongoing_fetches.project = true;
+        get_project(project_id)
+            .then((project) => {
+                this._projects[project_id] = project;
+            })
+            .catch((error) => {
+                this._error = error.message;
+            })
+            .finally(() => {
+                this.ongoing_fetches.project = false;
+            })
     },
 };
 

@@ -1,7 +1,6 @@
-import axios from "axios"
 import { defineStore } from "pinia"
 
-import { validate_story_list } from "@/models/api/story"
+import { list_stories } from "@/api/stories"
 
 
 const state = () => {
@@ -23,15 +22,13 @@ const getters = {
 
 const actions = {
     fetch_stories(project_id) {
-        axios.get(`http://localhost:8080/api/v1/project/${project_id}/stories`).then((response) => {
-            if (!validate_story_list(response.data)) {
-                this._error = `Invalid data from API: ${validate_story_list.errors[-1]}`;
-                console.error(this._error);
-                return;
-            }
-
-            this._stories = response.data;
-        });
+        list_stories(project_id)
+            .then((stories) => {
+                this._stories = stories;
+            })
+            .catch((error) => {
+                this._error = error.message;
+            })
     }
 }
 
