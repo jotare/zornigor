@@ -6,8 +6,8 @@ from starlette.responses import JSONResponse, Response
 
 from zornigor.api.models.project import CreateProject, Project
 from zornigor.api.v1.router import PROJECT, PROJECTS, api
+from zornigor.db import models as db_models
 from zornigor.db import projects
-from zornigor.db.models import Project as DbProject
 from zornigor.utils import slugify
 
 
@@ -19,12 +19,12 @@ from zornigor.utils import slugify
 )
 @version(1)
 async def create_project(request: Request, item: CreateProject):
-    p = DbProject(
+    project = db_models.NewProject(
         slug=slugify(item.id) if item.id else slugify(item.name),
         name=item.name,
         description=item.description,
     )
-    await projects.create_project(p)
+    await projects.create_project(project)
     return Response(status_code=201)
 
 

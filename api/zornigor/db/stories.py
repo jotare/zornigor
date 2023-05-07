@@ -1,24 +1,33 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from sqlalchemy import and_, insert, select
 
-from zornigor.db.models import Story
+from zornigor.db.models import NewStory, Story
+from zornigor.db.projects import get_project_last_story_id, update_project
 from zornigor.db.tables import stories
 from zornigor.db.utility import get_database
 
 
-async def create_story(story: Story, force_id: bool = False):
-    db = get_database(strict=True)
-    values = story.dict()
-    if not force_id:
-        values.pop("id", None)
-    stmt = insert(stories).values(**values)
-    result = await db.execute(stmt)
-    return result
+async def create_story(story: Union[Story, NewStory]):
+    db = get_database(strict=True)  # type: ignore
+    async with db.transaction():
+        values = story.dict()
+
+        if type(story) == NewStory:
+            # use incremental story id by project
+            last_story_id = await get_project_last_story_id(story.project)
+            story_id = last_story_id + 1
+
+            await update_project(story.project, last_story_id=story_id)
+            values["id"] = story_id
+
+        stmt = insert(stories).values(**values)
+        result = await db.execute(stmt)
+        return result
 
 
 async def get_story(project: str, id: int) -> Optional[Story]:
-    db = get_database(strict=True)
+    db = get_database(strict=True)  # type: ignore
     stmt = select(
         stories.c.id,
         stories.c.title,
@@ -45,7 +54,7 @@ async def get_story(project: str, id: int) -> Optional[Story]:
 
 
 async def list_stories(project: str) -> List[Story]:
-    db = get_database(strict=True)
+    db = get_database(strict=True)  # type: ignore
     stmt = select(
         stories.c.id,
         stories.c.title,

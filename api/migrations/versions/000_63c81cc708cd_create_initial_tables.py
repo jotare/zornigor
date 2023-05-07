@@ -23,6 +23,7 @@ def upgrade() -> None:
         sa.Column("name", sa.String, nullable=False),
         sa.Column("description", sa.String, nullable=True),
         sa.Column("created", sa.DateTime, default=sa.func.now()),
+        sa.Column("last_story_id", sa.Integer, nullable=False, server_default=sa.text("0")),
     )
 
     op.create_table(

@@ -1,22 +1,27 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, update
 
-from zornigor.db.models import Project
+from zornigor.db.errors import ProjectNotFound
+from zornigor.db.models import NewProject, Project
 from zornigor.db.tables import projects
 from zornigor.db.utility import get_database
 
 
-async def create_project(project: Project):
-    db = get_database(strict=True)
+async def create_project(project: Union[Project, NewProject]):
+    db = get_database(strict=True)  # type: ignore
     stmt = insert(projects).values(**project.dict())
     await db.execute(stmt)
 
 
 async def get_project(slug: str) -> Optional[Project]:
-    db = get_database(strict=True)
+    db = get_database(strict=True)  # type: ignore
     stmt = select(
-        projects.c.slug, projects.c.name, projects.c.description, projects.c.created
+        projects.c.slug,
+        projects.c.name,
+        projects.c.description,
+        projects.c.created,
+        projects.c.last_story_id,
     ).where(projects.c.slug == slug)
 
     result = await db.fetch_one(stmt)
@@ -28,11 +33,21 @@ async def get_project(slug: str) -> Optional[Project]:
         name=result.name,
         description=result.description,
         created=result.created,
+        last_story_id=result.last_story_id,
     )
 
 
+async def get_project_last_story_id(slug: str) -> int:
+    db = get_database(strict=True)  # type: ignore
+    stmt = select(projects.c.last_story_id).where(projects.c.slug == slug)
+    project = await db.fetch_one(stmt)
+    if project is None:
+        raise ProjectNotFound(f"Project {slug} not found")
+    return project.last_story_id
+
+
 async def list_projects() -> List[Project]:
-    db = get_database(strict=True)
+    db = get_database(strict=True)  # type: ignore
     stmt = select(
         projects.c.slug, projects.c.name, projects.c.description, projects.c.created
     )
@@ -45,3 +60,9 @@ async def list_projects() -> List[Project]:
         )
         async for row in db.iterate(stmt)
     ]
+
+
+async def update_project(slug: str, **values):
+    db = get_database(strict=True)  # type: ignore
+    stmt = update(projects).where(projects.c.slug == slug).values(**values)
+    await db.execute(stmt)

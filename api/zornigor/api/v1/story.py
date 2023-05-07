@@ -6,8 +6,8 @@ from starlette.responses import JSONResponse, Response
 
 from zornigor.api.models.story import CreateStory, Story
 from zornigor.api.v1.router import PROJECT, STORIES, STORY, api
+from zornigor.db import models as db_models
 from zornigor.db import stories
-from zornigor.db.models import Story as DbStory
 
 
 @api.post(
@@ -18,14 +18,13 @@ from zornigor.db.models import Story as DbStory
 )
 @version(1)
 async def create_story(request: Request, project_id: str, item: CreateStory):
-    s = DbStory(
-        id=0,
+    payload = db_models.NewStory(
         title=item.title,
         description=item.description,
         project=project_id,
         state=item.state,
     )
-    await stories.create_story(s)
+    await stories.create_story(payload)
     return Response(status_code=201)
 
 
@@ -52,9 +51,7 @@ async def get_story(request: Request, project_id: str, story_id: str) -> Story:
     if story is None:
         return JSONResponse(
             status_code=404,
-            content={
-                "detail": f"Project '{project_id}' or story '{story_id}' not found"
-            },
+            content={"detail": f"Project {project_id} or story {story_id} not found"},
         )
 
     return Story(
