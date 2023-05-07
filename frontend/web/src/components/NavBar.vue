@@ -44,21 +44,18 @@
 </template>
 
 <script>
- import { use_projects_store } from "../stores/project"
+ import { use_projects_store } from "@/stores/projects"
 
  export default {
      name: "NavBar",
 
      setup() {
-         const stores = {
-             projects: use_projects_store(),
-         }
-
-         return { stores }
+         const store = use_projects_store();
+         return { store }
      },
 
      created() {
-         this.stores.projects.fetch_projects();
+         this.store.fetch_projects();
      },
 
      data() {
@@ -69,7 +66,7 @@
 
      computed: {
          projects() {
-             return this.stores.projects.projects;
+             return this.store.projects;
          },
      },
 

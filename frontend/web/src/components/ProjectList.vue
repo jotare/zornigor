@@ -16,7 +16,7 @@
 
 <script>
 
- import { use_projects_store } from "../stores/project"
+ import { use_projects_store } from "@/stores/projects"
 
  export default {
      name: "ProjectList",

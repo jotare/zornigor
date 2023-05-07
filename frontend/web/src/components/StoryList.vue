@@ -1,10 +1,6 @@
 <template>
-    <div v-if="stories_error">
-        {{ stories_error }}
-    </div>
-
-    <div v-else-if="states_error">
-        {{ states_error }}
+    <div v-if="error">
+        {{ error }}
     </div>
 
     <div v-else class="container">
@@ -29,8 +25,7 @@
 </template>
 
 <script>
- import { use_stories_store } from "../stores/story"
- import { use_states_store } from "../stores/state"
+ import { use_projects_store } from "@/stores/projects"
 
  import StoryItem from "./StoryItem.vue"
 
@@ -44,52 +39,33 @@
      },
 
      setup() {
-         const stores = {
-             stories: use_stories_store(),
-             states: use_states_store(),
-         }
-
-         return { stores }
+         const store = use_projects_store();
+         return { store }
      },
 
      created() {
-         this.stores.states.fetch_states(this.project.id);
-         this.stores.stories.fetch_stories(this.project.id);
+         this.store.fetch_states(this.project.id);
+         this.store.fetch_stories(this.project.id);
      },
 
      watch: {
          project(value) {
-             this.stores.states.fetch_states(value.id);
-             this.stores.stories.fetch_stories(value.id);
+             this.store.fetch_states(value.id);
+             this.store.fetch_stories(value.id);
          },
      },
 
      computed: {
          states() {
-             return this.stores.states.states;
-         },
-
-         states_error() {
-             return this.stores.states.error;
+             return this.store.states(this.project.id);
          },
 
          stories() {
-             let stories = {}
-             for (let state of this.states) {
-                 for (let story of this.stores.stories.stories) {
-                     if (story.state == state.id) {
-                         if (stories[state.id] == null) {
-                             stories[state.id] = [];
-                         }
-                         stories[state.id].push(story);
-                     }
-                 }
-             }
-             return stories;
+             return this.store.stories_by_state(this.project.id);
          },
 
-         stories_error() {
-             return this.stores.stories.error;
+         error() {
+             return this.store.error;
          },
      },
  }
