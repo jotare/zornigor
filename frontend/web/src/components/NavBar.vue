@@ -38,12 +38,15 @@
 
                         <hr class="navbar-divider">
 
-                        <a class="navbar-item">
+                        <router-link
+                            class="navbar-item"
+                            :to="{ name: 'project_create'}"
+                        >
                             <p>
                                 <font-awesome-icon icon="fa-solid fa-plus"></font-awesome-icon>
                                 New Project
                             </p>
-                        </a>
+                        </router-link>
                     </div>
                 </div>
             </div>

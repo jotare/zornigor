@@ -5,6 +5,20 @@ import * as  validators from "@/api/validators"
 import { BASE_URL } from "@/globals"
 
 
+function create_project(project) {
+    return axios
+        .post(BASE_URL + "/projects", project)
+        .then((response) => {
+            if (response.status != 201) {
+                throw Error(`API error ${response.status}: ${response.data}`);
+            }
+        })
+        .catch((error) => {
+            console.log(`Error while POST /projects: ${error.message}`);
+            throw error;
+        })
+}
+
 function get_project(project_id) {
     return axios
         .get(BASE_URL + "/project/" + project_id)
@@ -51,6 +65,7 @@ function list_projects() {
 
 
 export {
+    create_project,
     get_project,
     list_projects,
 }
