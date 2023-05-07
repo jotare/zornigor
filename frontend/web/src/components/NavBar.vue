@@ -20,7 +20,7 @@
             <div class="navbar-start">
                 <div
                     class="navbar-item has-dropdown"
-                    :class="{'is-active': is_menu_active}"
+                    :class="{'is-active': menus.project_list.is_active}"
                     @click="toggle_projects_menu"
                 >
                     <a class="navbar-link">
@@ -35,6 +35,15 @@
                         >
                             {{ project.name }}
                         </router-link>
+
+                        <hr class="navbar-divider">
+
+                        <a class="navbar-item">
+                            <p>
+                                <font-awesome-icon icon="fa-solid fa-plus"></font-awesome-icon>
+                                New Project
+                            </p>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -60,7 +69,16 @@
 
      data() {
          return {
-             is_menu_active: false,
+             menus: {
+                 project_list: {
+                     is_active: false,
+                 },
+             },
+             modals: {
+                 new_project: {
+                     is_active: false,
+                 },
+             },
          }
      },
 
@@ -72,9 +90,16 @@
 
      methods: {
          toggle_projects_menu() {
-            this.is_menu_active = !this.is_menu_active;
+             this.menus.project_list.is_active = !this.menus.project_list.is_active;
          },
-     }
-
+     },
  }
 </script>
+
+<style type="text/css" media="screen">
+.iconicon {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+</style>

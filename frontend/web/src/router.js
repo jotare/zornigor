@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router"
 
 import ProjectList from "@/components/ProjectList.vue"
-import ProjectStoriesView from "@/components/ProjectStoriesView.vue"
-
+import ProjectView from "@/components/ProjectView.vue"
 
 
 const routes = [
@@ -19,7 +18,7 @@ const routes = [
     {
         name: "project",
         path: "/project/:id",
-        component: ProjectStoriesView,
+        component: ProjectView,
         props: true,
     },
 ]
