@@ -1,7 +1,7 @@
 <template>
     <h1 class="title">Project List:</h1>
 
-    <ul class="container">
+    <ul class="container pb-5">
         <li class="box" v-for="project in projects" :key="project.id">
             <router-link
                 style="text-decoration: none; color: inherit;"
