@@ -1,12 +1,24 @@
+import sqlite3
 from typing import Optional
 
 from databases import Database
+from sqlalchemy import event
 
 _DATABASE: Optional[Database] = None
 
 
+class _Connection(sqlite3.Connection):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.execute("PRAGMA foreign_keys = ON")
+
+
 async def create_database(url: str) -> Database:
-    db = Database(url)
+    # HACK: `factory` is passed as kwarg. It'll be propagated to aiosqlite
+    # backend and it'll be used as sqlite3.Connection object creation. We
+    # override this to be able to set `PRAGMA foreign_keys=ON` for every
+    # connection to the database.
+    db = Database(url, factory=_Connection)
     await db.connect()
     return db
 
