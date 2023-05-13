@@ -3,8 +3,10 @@ from typing import List
 from fastapi_versioning import version
 from starlette.requests import Request
 
+from zornigor.api.models.common import Slug
 from zornigor.api.models.state import State
 from zornigor.api.v1.router import PROJECT, STATES, api
+from zornigor.db import states
 
 
 @api.get(
@@ -15,36 +17,12 @@ from zornigor.api.v1.router import PROJECT, STATES, api
 )
 @version(1)
 async def list_states(request: Request, project_id: str) -> List[State]:
-    # TODO implement non hardcoded states
+    db_states = await states.list_states(project_id)
     return [
         State(
-            id="ideas",
-            name="Ideas",
-            description="Ideas to work on some day",
-        ),
-        State(
-            id="backlog",
-            name="Backlog",
-            description="Backlog of stories to work on in a not far future",
-        ),
-        State(
-            id="todo",
-            name="ToDo",
-            description="Things to do soon",
-        ),
-        State(
-            id="dev",
-            name="In development",
-            description="Stories in progress",
-        ),
-        State(
-            id="blocked",
-            name="Blocked",
-            description="Blocked by someone or something",
-        ),
-        State(
-            id="done",
-            name="Done",
-            description="Completed stories",
-        ),
+            id=Slug(db_state.slug),
+            name=db_state.name,
+            description=db_state.description,
+        )
+        for db_state in db_states
     ]

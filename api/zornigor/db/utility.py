@@ -2,7 +2,6 @@ import sqlite3
 from typing import Optional
 
 from databases import Database
-from sqlalchemy import event
 
 _DATABASE: Optional[Database] = None
 

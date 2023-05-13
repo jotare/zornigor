@@ -21,7 +21,7 @@ settings = dict(
     on_shutdown=[finalize],
 )
 
-base_app = FastAPI(title="Zornigor API", **settings)
+base_app = FastAPI(title="Zornigor API", **settings)  # type: ignore
 
 
 @base_app.get("/")

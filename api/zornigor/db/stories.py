@@ -1,7 +1,9 @@
+from sqlite3 import IntegrityError
 from typing import List, Optional, Union
 
 from sqlalchemy import and_, insert, select
 
+from zornigor.db.errors import InvalidState
 from zornigor.db.models import NewStory, Story
 from zornigor.db.projects import get_project_last_story_id, update_project
 from zornigor.db.tables import stories
@@ -22,7 +24,13 @@ async def create_story(story: Union[Story, NewStory]):
             values["id"] = story_id
 
         stmt = insert(stories).values(**values)
-        result = await db.execute(stmt)
+        try:
+            result = await db.execute(stmt)
+        except IntegrityError as exc:
+            raise InvalidState(
+                f"Invalid state '{story.state}' for story in project {story.project}"
+            ) from exc
+
         return result
 
 

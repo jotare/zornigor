@@ -14,14 +14,14 @@ async def test_create_project(api: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_get_project(api: AsyncClient, project: Project):
-    resp = await api.get(f"/{PROJECT}/{project.id}")
+async def test_get_project(api: AsyncClient, api_project: Project):
+    resp = await api.get(f"/{PROJECT}/{api_project.id}")
     assert resp.status_code == 200
 
     body = Project.parse_raw(resp.content)
-    assert body.id == project.id
-    assert body.name == project.name
-    assert body.description == project.description
+    assert body.id == api_project.id
+    assert body.name == api_project.name
+    assert body.description == api_project.description
 
 
 @pytest.mark.asyncio

@@ -4,3 +4,7 @@ class DbError(Exception):
 
 class ProjectNotFound(DbError):
     pass
+
+
+class InvalidState(DbError):
+    pass

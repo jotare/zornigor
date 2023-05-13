@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel, Field
+from pydantic.color import Color
 
 
 class NewProject(BaseModel):
@@ -22,7 +23,7 @@ class State(BaseModel):
     slug: str
     name: str
     description: str = Field("")
-    color: str
+    color: Color = Field(Color("white"))
     project: str
 
 

@@ -1,5 +1,6 @@
 from typing import List
 
+from fastapi.exceptions import HTTPException
 from fastapi_versioning import version
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
@@ -8,6 +9,7 @@ from zornigor.api.models.story import CreateStory, Story
 from zornigor.api.v1.router import PROJECT, STORIES, STORY, api
 from zornigor.db import models as db_models
 from zornigor.db import stories
+from zornigor.db.errors import InvalidState, ProjectNotFound
 
 
 @api.post(
@@ -24,8 +26,14 @@ async def create_story(request: Request, project_id: str, item: CreateStory):
         project=project_id,
         state=item.state,
     )
-    await stories.create_story(payload)
-    return Response(status_code=201)
+    try:
+        await stories.create_story(payload)
+    except ProjectNotFound:
+        raise HTTPException(status_code=404, detail="Project does not exist")
+    except InvalidState as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+    else:
+        return Response(status_code=201)
 
 
 @api.get(
