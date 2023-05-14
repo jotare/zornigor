@@ -5,7 +5,7 @@ from fastapi_versioning import version
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
-from zornigor.api.models.story import CreateStory, Story
+from zornigor.api.models.story import CreateStory, Story, UpdateStory
 from zornigor.api.v1.router import PROJECT, STORIES, STORY, api
 from zornigor.db import models as db_models
 from zornigor.db import stories
@@ -71,3 +71,30 @@ async def get_story(request: Request, project_id: str, story_id: str) -> Story:
         project=story.project,
         state=story.state,
     )
+
+
+@api.patch(
+    f"/{PROJECT}/{{project_id}}/{STORY}/{{story_id}}",
+    status_code=204,
+    name="Update story",
+    tags=["Stories"],
+)
+@version(1)
+async def update_story(request: Request, project_id: str, story_id: str, item: UpdateStory):
+    payload = db_models.UpdateStory(
+        title=item.title,
+        description=item.description,
+        state=item.state,
+    )
+    await stories.update_story(project_id, story_id, payload)
+
+
+@api.delete(
+    f"/{PROJECT}/{{project_id}}/{STORY}/{{story_id}}",
+    status_code=204,
+    name="Delete story",
+    tags=["Stories"],
+)
+@version(1)
+async def delete_story(request: Request, project_id: str, story_id: str):
+    await stories.delete_story(project_id, story_id)

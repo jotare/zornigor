@@ -52,4 +52,4 @@ async def test_get_nonexistent_story(api: AsyncClient, api_project: Project):
     assert resp.status_code == 404
 
 
-# TODO: update, list
+# TODO: update, list, delete

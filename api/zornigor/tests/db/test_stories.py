@@ -102,3 +102,9 @@ async def test_delete_story(db, db_story: Story):
 
     story = await get_story(db_story.project, db_story.id)
     assert story is None
+
+
+@pytest.mark.asyncio
+async def test_delete_story_twice(db, db_story: Story):
+    await delete_story(db_story.project, db_story.id)
+    await delete_story(db_story.project, db_story.id)

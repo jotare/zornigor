@@ -87,11 +87,11 @@ async def list_stories(project: str) -> List[Story]:
     ]
 
 
-async def update_story(project: str, story: UpdateStory):
+async def update_story(project: str, story_id: int, story: UpdateStory):
     db = get_database(strict=True)  # type: ignore
     values = story.dict()
     values["modified"] = datetime.now()
-    stmt = update(stories).where(stories.c.project == project).values(**values)
+    stmt = update(stories).where(and_(stories.c.project == project, stories.c.id == story_id)).values(**values)
     await db.execute(stmt)
 
 

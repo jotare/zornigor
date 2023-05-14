@@ -9,6 +9,12 @@ class CreateStory(BaseModel):
     state: str
 
 
+class UpdateStory(BaseModel):
+    title: str
+    description: str
+    state: str
+
+
 class Story(BaseModel):
     id: int
 
