@@ -22,7 +22,8 @@ def upgrade() -> None:
         sa.Column("slug", sa.String, nullable=False, primary_key=True),
         sa.Column("name", sa.String, nullable=False),
         sa.Column("description", sa.String, nullable=True),
-        sa.Column("created", sa.DateTime, default=sa.func.now()),
+        sa.Column("created", sa.DateTime, default=sa.func.now(), nullable=False),
+        sa.Column("modified", sa.DateTime, default=sa.func.now(), nullable=False),
         sa.Column("last_story_id", sa.Integer, nullable=False, server_default=sa.text("0")),
     )
 
