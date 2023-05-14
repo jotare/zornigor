@@ -1,11 +1,12 @@
+from datetime import datetime
 from sqlite3 import IntegrityError
 from typing import List, Optional, Union
 
-from sqlalchemy import and_, insert, select
+from sqlalchemy import and_, insert, select, update, delete
 
 from zornigor.db.errors import InvalidState
-from zornigor.db.models import NewStory, Story
-from zornigor.db.projects import get_project_last_story_id, update_project
+from zornigor.db.models import NewStory, Story, UpdateStory
+from zornigor.db.projects import get_project_last_story_id, update_project_last_story_id
 from zornigor.db.tables import stories
 from zornigor.db.utility import get_database
 
@@ -20,7 +21,7 @@ async def create_story(story: Union[Story, NewStory]):
             last_story_id = await get_project_last_story_id(story.project)
             story_id = last_story_id + 1
 
-            await update_project(story.project, last_story_id=story_id)
+            await update_project_last_story_id(story.project, story_id)
             values["id"] = story_id
 
         stmt = insert(stories).values(**values)
@@ -84,3 +85,17 @@ async def list_stories(project: str) -> List[Story]:
         )
         async for row in db.iterate(stmt)
     ]
+
+
+async def update_story(project: str, story: UpdateStory):
+    db = get_database(strict=True)  # type: ignore
+    values = story.dict()
+    values["modified"] = datetime.now()
+    stmt = update(stories).where(stories.c.project == project).values(**values)
+    await db.execute(stmt)
+
+
+async def delete_story(project: str, story_id: int):
+    db = get_database(strict=True)  # type: ignore
+    stmt = delete(stories).where(and_(stories.c.project == project, stories.c.id == story_id))
+    await db.execute(stmt)

@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 from tempfile import mkdtemp
 from typing import List
 
@@ -12,6 +11,7 @@ from zornigor.api.v1.router import PROJECT, PROJECTS, STORIES, STORY
 from zornigor.db import models as db_models
 from zornigor.db.projects import create_project
 from zornigor.db.states import create_state
+from zornigor.db.stories import create_story
 from zornigor.db.tables import metadata
 from zornigor.db.utility import create_database, forget_database, set_database
 
@@ -73,7 +73,6 @@ async def db_project(db) -> db_models.Project:
         slug="zornigor",
         name="Zornigor Project",
         description="This is Zornigor",
-        created=datetime.now(),
     )
     await create_project(project)
     yield project
@@ -135,6 +134,20 @@ async def db_states(db, db_project: db_models.Project):
 @pytest.mark.asyncio
 async def api_states(db, api_project: api_models.Project):
     yield await _states(api_project.id)
+
+
+@pytest.fixture
+@pytest.mark.asyncio
+async def db_story(db, db_project: db_models.Project, db_states: List[str]):
+    story = db_models.Story(
+        id=1,
+        title="Story",
+        description="Description",
+        project=db_project.slug,
+        state=db_states[0],
+    )
+    await create_story(story)
+    yield story
 
 
 @pytest.fixture(scope="function")

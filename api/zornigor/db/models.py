@@ -36,9 +36,13 @@ class State(BaseModel):
 class NewStory(BaseModel):
     title: str
     description: str
-    created: datetime = Field(default_factory=datetime.now)
-    modified: datetime = Field(default_factory=datetime.now)
     project: str
+    state: str
+
+
+class UpdateStory(BaseModel):
+    title: str
+    description: str
     state: str
 
 
