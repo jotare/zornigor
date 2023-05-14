@@ -1,6 +1,5 @@
 <template>
 
-
     <div class="container is-fluid pt-5">
 
         <div class="field has-text-left">
@@ -23,7 +22,7 @@
                 <button class="button is-link" @click="create_project">Create project</button>
             </div>
             <div class="control">
-                <button class="button is-link is-light">Cancel</button>
+                <button class="button is-link is-light" @click="$router.back()">Cancel</button>
             </div>
         </div>
 

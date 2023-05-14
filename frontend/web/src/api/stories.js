@@ -5,6 +5,20 @@ import * as  validators from "@/api/validators"
 import { BASE_URL } from "@/globals"
 
 
+function create_story(project_id, story) {
+    return axios
+        .post(BASE_URL + "/project/" + project_id + "/stories", story)
+        .then((response) => {
+            if (response.status != 201) {
+                throw Error(`API error ${response.status}: ${response.data}`);
+            }
+        })
+        .catch((error) => {
+            console.log(`Error while POST /project/${project_id}/stories: ${error.message}`);
+            throw error;
+        })
+}
+
 function get_story(project_id, story_id) {
     return axios
         .get(BASE_URL + "/project/" + project_id + "/story/" + story_id)
@@ -50,7 +64,24 @@ function list_stories(project_id) {
 }
 
 
+function update_story(project_id, story_id, update) {
+    return axios
+        .patch(BASE_URL + "/project/" + project_id + "/story/" + story_id, update)
+        .then((response) => {
+            if (response.status != 204) {
+                throw Error(`API error ${response.status}: ${response.data}`);
+            }
+        })
+        .catch((error) => {
+            console.log(`Error while PATCH /project/${project_id}/story/${story_id}: ${error.message}`);
+            throw error;
+        })
+}
+
+
 export {
+    create_story,
     get_story,
     list_stories,
+    update_story,
 }

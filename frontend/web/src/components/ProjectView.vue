@@ -7,10 +7,20 @@
     </template>
 
     <template v-else>
+    <div class="container pl-5 pr-5 is-flex is-justify-content-space-between">
         <h1 class="title">{{ project.name }}</h1>
 
+        <router-link class="button" :to="{ 'name': 'story_create' }">
+            <p>
+                <font-awesome-icon class="pr-1" icon="fa-solid fa-plus"></font-awesome-icon>
+                New Story
+            </p>
+        </router-link>
+    </div>
+    <!-- <h1 class="title">{{ project.name }}</h1> -->
+
         <hr style="border: 4px double red" />
-        <StoryList :project="project"/>
+        <StoryList :project="project" v-if="project != null"/>
         <hr style="border: 4px double red" />
     </template>
 
@@ -44,36 +54,24 @@
          return { store };
      },
 
-     data() {
-         return {
-             project: null,
-         }
-     },
-
-     watch: {
-         "$route.params": {
-             handler: function(value) {
-                 // async fetch
-                 this.fetch_project(value.id);
+     created() {
+         this.$watch(
+             () => this.$route.params,
+             () => {
+                 this.store.fetch_project(this.$route.params.id)
+                     .then(() => {
+                         this.store.select_project(this.$route.params.id);
+                     })
              },
-             deep: true,
-             immediate: true,
-         },
-
-         "store.projects": {
-             handler: function() {
-                 // update project when async fetch has finished
-                 this.project = this.store.project(this.id)
-             }
-         }
+             { immediate: true }
+         )
      },
 
-     methods: {
-         fetch_project(project_id) {
-             this.store.fetch_project(project_id);
-             this.store.fetch_stories(project_id);
+     computed: {
+         project() {
+             return this.store.selected_project
          },
-     }
+     },
  }
 </script>
 

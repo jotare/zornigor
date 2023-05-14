@@ -1,13 +1,9 @@
 <template>
-    <div v-if="error">
-        {{ error }}
-    </div>
-
-    <div v-else class="container">
+    <div class="container">
         <ul class="columns is-mobile">
             <li
                 class="column border"
-                v-for="state in states" :key="state.id"
+                v-for="state in project.states" :key="state.id"
             >
                 <h3 class="subtitle has-text-weight-semibold">{{ state.name }}</h3>
                 <!-- <p>{{ state.description }}</p> -->
@@ -15,7 +11,7 @@
                 <hr class="border" />
 
                 <ul>
-                    <li v-for="story in stories[state.id]" :key="story.id">
+                    <li v-for="story in state.stories" :key="story.id">
                         <StoryItem :story="story"/>
                     </li>
                 </ul>
@@ -25,8 +21,6 @@
 </template>
 
 <script>
- import { use_projects_store } from "@/stores/projects"
-
  import StoryItem from "./StoryItem.vue"
 
  export default {
@@ -38,34 +32,13 @@
          StoryItem,
      },
 
-     setup() {
-         const store = use_projects_store();
-         return { store }
-     },
-
-     created() {
-         this.store.fetch_states(this.project.id);
-         this.store.fetch_stories(this.project.id);
-     },
-
-     watch: {
-         project(value) {
-             this.store.fetch_states(value.id);
-             this.store.fetch_stories(value.id);
-         },
-     },
-
      computed: {
          states() {
-             return this.store.states(this.project.id);
+             return this.project.states || [];
          },
 
          stories() {
-             return this.store.stories_by_state(this.project.id);
-         },
-
-         error() {
-             return this.store.error;
+             return this.project.stories || [];
          },
      },
  }
