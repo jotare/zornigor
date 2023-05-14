@@ -1,9 +1,10 @@
+from datetime import datetime
 from typing import List, Optional, Union
 
 from sqlalchemy import insert, select, update
 
 from zornigor.db.errors import ProjectNotFound
-from zornigor.db.models import NewProject, Project
+from zornigor.db.models import NewProject, Project, UpdateProject
 from zornigor.db.tables import projects
 from zornigor.db.utility import get_database
 
@@ -21,6 +22,7 @@ async def get_project(slug: str) -> Optional[Project]:
         projects.c.name,
         projects.c.description,
         projects.c.created,
+        projects.c.modified,
         projects.c.last_story_id,
     ).where(projects.c.slug == slug)
 
@@ -33,6 +35,7 @@ async def get_project(slug: str) -> Optional[Project]:
         name=result.name,
         description=result.description,
         created=result.created,
+        modified=result.modified,
         last_story_id=result.last_story_id,
     )
 
@@ -62,7 +65,19 @@ async def list_projects() -> List[Project]:
     ]
 
 
-async def update_project(slug: str, **values):
+async def update_project_last_story_id(slug: str, last_story_id: int):
     db = get_database(strict=True)  # type: ignore
+    stmt = (
+        update(projects)
+        .where(projects.c.slug == slug)
+        .values(last_story_id=last_story_id)
+    )
+    await db.execute(stmt)
+
+
+async def update_project(slug: str, project: UpdateProject):
+    db = get_database(strict=True)  # type: ignore
+    values = project.dict()
+    values["modified"] = datetime.now()
     stmt = update(projects).where(projects.c.slug == slug).values(**values)
     await db.execute(stmt)

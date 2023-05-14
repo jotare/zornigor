@@ -11,11 +11,17 @@ class NewProject(BaseModel):
     description: Optional[str]
 
 
+class UpdateProject(BaseModel):
+    name: str
+    description: Optional[str]
+
+
 class Project(BaseModel):
     slug: str
     name: str
     description: Optional[str]
-    created: datetime
+    created: datetime = Field(default_factory=datetime.now)
+    modified: datetime = Field(default_factory=datetime.now)
     last_story_id: int = Field(0, ge=0)
 
 
