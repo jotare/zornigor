@@ -13,9 +13,6 @@ Zornigor API is built in Python using `FastAPI`.
 
 A web frontend is built on top of `Vue3`.
 
-
-### Demo
-
 Create new projects:
 ![Create new projects](docs/assets/project-create.png)
 
