@@ -12,7 +12,7 @@
         <div class="field has-text-left">
             <label class="label">Description:</label>
             <div class="control">
-                <textarea class="textarea is-primary" v-model="description" placeholder="What is the project going to be about?"></textarea>
+                <textarea class="textarea is-primary" v-model="description" placeholder="What is the story going to be about?"></textarea>
             </div>
         </div>
 
