@@ -1,7 +1,11 @@
 <template>
     <div class="select">
         <select v-model="selected">
-            <option v-for="state in states" :key="state.id" :value="state.id" @click="select_state(state.id)">
+            <option v-for="state in states"
+                    :key="state.id"
+                    :value="state.id"
+                    @click="select_state(state.id)"
+            >
                 {{ state.name }}
             </option>
         </select>
@@ -20,7 +24,7 @@
      data() {
          return {
              is_active: false,
-             selected: this.default || this.states[0].id ,
+             selected: this.default || (this.states.length > 0 ? this.states[0].id : null),
          }
      },
 
@@ -29,14 +33,12 @@
              if (this.selected == null) {
                  return "Select an state";
              }
-             console.log("Selected state", this.selected, this.default)
              return this.selected;
          },
      },
 
      methods: {
          toggle() {
-             console.log("Toggle")
              this.is_active = !this.is_active;
          },
 
